@@ -1,0 +1,17 @@
+version: "3.3"
+services:
+  db:
+    build:
+      context: .
+      dockerfile: ./dockerfile.db
+    restart: always
+    container_name: database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12341234
+      POSTGRES_DB: test
+      POSTGRES_PORT: 5432
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
