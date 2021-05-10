@@ -3,7 +3,7 @@ const productsReducer = (state, action) => {
     case "INIT":
         return [...action.payload]
     default:
-      return state;
+      return [...state];
   }
 };
 export default productsReducer;

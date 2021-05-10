@@ -25,8 +25,6 @@ export default function CartModal({ buyItems, open, setOpen, cart, products, dis
       temp.push({ ...productOuts, count: val.count });
     });
 
-    console.log(cart)
-    console.log(products)
     setCartData(temp);
   }, []);
 
