@@ -12,7 +12,7 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Badge from "@material-ui/core/Badge";
-
+import CartModal from './Modal'
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -68,9 +68,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SearchAppBar({ setFilter, cart }) {
+export default function SearchAppBar({ buyItems, products, setFilter, cart, dispatchCart }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen]= useState(false);
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -143,9 +144,12 @@ export default function SearchAppBar({ setFilter, cart }) {
             />
           </div>
           <IconButton>
-            <Badge badgeContent={Object.keys(cart).length} color="secondary">
-              <ShoppingCartIcon style={{ color: "white" }} />
+            <Badge badgeContent={cart.length} color="secondary">
+              <ShoppingCartIcon onClick={() => {
+                setOpen(!open)
+              }} style={{ color: "white" }} />
             </Badge>
+            {open&&<CartModal buyItems={buyItems} products={products} cart={cart} dispatchCart={dispatchCart} open={open} setOpen={setOpen}/>}
           </IconButton>
         </Toolbar>
       </AppBar>

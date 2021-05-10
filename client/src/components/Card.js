@@ -36,6 +36,7 @@ export default function MediaCard({ product_data, cart, dispatchCart }) {
     product_image,
     product_stock,
   } = product_data;
+  const cartItem = cart.find(el=>el.id===product_id) 
   const classes = useStyles();
 
   return (
@@ -63,9 +64,9 @@ export default function MediaCard({ product_data, cart, dispatchCart }) {
       <CardActions style={{ dispay: "flex", justifyContent: "space-evenly" }}>
         <p>Stock {product_stock}</p>
 
-        {!cart[product_id] ? (
+        {!cartItem?.id ? (
           <Button
-          disabled={(cart[product_id] < product_stock)}
+          disabled={(cartItem?.count < product_stock)}
             onClick={() => {
               dispatchCart(add(product_id));
             }}
@@ -85,9 +86,9 @@ export default function MediaCard({ product_data, cart, dispatchCart }) {
             >
               -
             </Button>
-              {cart[product_id]}
+              {cartItem?.count}
             <Button
-            disabled={!(cart[product_id] < product_stock)}
+            disabled={!(cartItem?.count < product_stock)}
               onClick={() => {
                 dispatchCart(add(product_id));
               }}

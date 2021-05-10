@@ -19,31 +19,53 @@ const useStyles = makeStyles((theme) => ({
 
 export default function App() {
   const [products, dispatchProducts] = useReducer(productsReducer, []);
-  const [cart, dispatchCart] = useReducer(cartReducer, {});
+  const [cart, dispatchCart] = useReducer(cartReducer, []);
   const [filter, setFilter] = useState('all');
   const [shownElements, setShownElements] = useState([]);
   const classes = useStyles();
 
   const filterItems=(filter, products) => {
+    let auxProd = []
+
     if(filter==='all'){
-      setShownElements([...products])
+      auxProd=[...products]
     }
     else if(filter==='Vegetal'){
-      setShownElements(products.filter(val=>val.product_category === 'Vegetal'))
+      auxProd=products.filter(val=>val.product_category === 'Vegetal')
     }
     else if(filter==='Fruta'){
-      setShownElements(products.filter(val=>val.product_category === 'Fruta'))
+      auxProd=products.filter(val=>val.product_category === 'Fruta')
     }
+    auxProd.sort(function (a, b) {
+      return a.product_id - b.product_id;
+    });
+    setShownElements([...auxProd])
   }
 
   const fetchProducts = async () => {
     try {
+      
       const data = await publicFetch.get("get-products");
       dispatchProducts(initProduct(data.data));
+
     } catch (err) {
       console.error(err.message);
     }
   };
+
+  const buyItems = async(data)=>{
+    try{
+      data.forEach(async(val)=>{
+        await publicFetch.post("buy-products",
+        {count:val.product_stock-val.count ,id:val.product_id}
+        );
+      })
+
+      await fetchProducts()
+    }catch(err){
+      console.error(err.message)
+    }
+  }
 
   useEffect(() => {
     fetchProducts();
@@ -55,7 +77,7 @@ export default function App() {
 
   return (
     <div>
-      <SearchAppBar cart={cart} setFilter={setFilter} />
+      <SearchAppBar buyItems={buyItems} products={products} cart={cart} dispatchCart={dispatchCart} setFilter={setFilter} />
       <Grid
         className={classes.grid}
         container

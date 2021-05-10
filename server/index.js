@@ -6,6 +6,6 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/api/get-products', productController.getAllProducts)
-
+app.post('/api/buy-products', productController.buyProducts )
 app.listen(5001);
 console.log('Listening in port 5001')

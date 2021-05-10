@@ -11,7 +11,7 @@ export const removeOne = (data) => {
     payload: data,
   };
 };
-export const restart = (data) => {
+export const restart = () => {
   return {
     type: "RESTART",
   };
