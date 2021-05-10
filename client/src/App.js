@@ -42,7 +42,6 @@ export default function App() {
         });
       });
       
-      await fetchProducts();
       setState(1)
     } catch (err) {
       console.error(err.message);
